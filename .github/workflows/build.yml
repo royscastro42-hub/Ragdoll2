@@ -1,0 +1,25 @@
+name: Build Ragdoll
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar NDK
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja-build
+      - name: Descargar AML SDK
+        run: |
+          git clone https://github.com/AndroidModLoader/AML.git aml
+      - name: Compilar
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
+      - name: Subir .so
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ragdoll-so
+          path: build/*.so
